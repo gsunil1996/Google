@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google</title>
+</head>
+<style>
+    #header{
+        display: flex;
+    }
+    input{
+        width: 30%;
+        margin-left: 10%;
+        border-radius: 10px;
+    }
+    button{
+        width: 10%;
+        margin-left: 10px;
+    }
+</style>
+<body>
+    <div id="header">
+        <img src="https://www.google.com/logos/doodles/2021/sarla-thukrals-107th-birthday-6753651837109297.4-s.png" alt="">
+    <input type="text" id="inp">
+    <button onclick="search()">Search</button>
+    </div>
+    <div id="container"></div>
+</body>
+</html>
+
+<script>
+async function search(){
+    let res = await fetch(`http://api.serpstack.com/search?access_key=6bf947e9ccf80927ffecae1c4133c511&query=${inp.value}`);
+
+    let data = await res.json();
+
+    console.log(data);
+
+    showResults(data);
+}
+
+    let showResults = ({ organic_results, search_information }) => {
+        container.innerHTML = "";
+        container.innerHTML = `
+       <p>About ${search_information.total_results} results (${search_information.time_taken_displayed}seconds)</p>`
+
+        organic_results.forEach(({ title, url }) => {
+            let div = document.createElement("div");
+            div.innerHTML = `
+           <a href="${url}">${title}</a>`
+            container.append(div)
+        })
+    }
+
+
+</script>
